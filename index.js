@@ -1,8 +1,11 @@
 import express from 'express';
 import { promises as fs} from 'fs';
+import accountRouter from './Routes/accounts.js'
 
 const app = express();
 app.use(express.json());
+
+app.use('/account', accountRouter);
 
 app.listen(3001, async() => {
     try{
