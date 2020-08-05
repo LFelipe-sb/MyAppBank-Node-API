@@ -15,7 +15,27 @@ router.post('/', async(req, res) => {
         
         res.send('Criado com sucesso. ' + JSON.stringify(account));
     } catch (err) {
-        res.status(500).send('Ocorreu um erro.' + err)
+        res.status(500).send('Ocorreu um erro. ' + err);
+    }
+});
+
+router.get('/', async(_req, res) => {
+    try{
+        const data = JSON.parse(await fs.readFile('accounts.json'));
+        delete data.nextID;
+        res.send(data);
+    } catch (err) {
+        res.status(500).send('Ocorreu um erro. ' + err);
+    }
+});
+
+router.get('/:id', async(req, res) => {
+    try{
+        const data = JSON.parse(await fs.readFile('accounts.json'));
+        const account = data.account.find((account) => account.id === parseInt(req.params.id));
+        res.send(account);
+    } catch(err) {
+        res.status(500).send('Ocorreu um erro. ' + err);
     }
 });
 
