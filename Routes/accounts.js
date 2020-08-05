@@ -39,4 +39,43 @@ router.get('/:id', async(req, res) => {
     }
 });
 
+router.delete('/:id', async(req, res) => {
+    try{
+        const data = JSON.parse(await fs.readFile('accounts.json'));
+        data.account = data.account.filter((account) => account.id !== parseInt(req.params.id));
+        await fs.writeFile('accounts.json', JSON.stringify(data, null, 2));
+        res.send('Item excluido com sucesso.')
+    } catch(err) {
+        res.status(500).send('Ocorreu um erro. ' + err);
+    }
+});
+
+router.put('/', async(req, res) => {
+    try {
+        const data = JSON.parse(await fs.readFile('accounts.json'));
+        const accountData = req.body;
+        const index = data.account.findIndex((item) => item.id === parseInt(accountData.id));
+        data.account[index] = accountData;
+        await fs.writeFile('accounts.json', JSON.stringify(data));
+        res.send(data);
+    } catch (err) {
+        res.status(500).send('Ocorreu um erro. ' + err);
+    }
+});
+
+router.patch('/updateBalance', async(req, res) => {
+    try{
+        const data = JSON.parse(await fs.readFile('accounts.json'));
+        const accountData = req.body;
+
+        const index = data.account.findIndex((item) => item.id === parseInt(accountData.id));
+        data.account[index].balance = accountData.balance;
+
+        await fs.writeFile('accounts.json', JSON.stringify(data));
+        res.send(data.account[index]);
+    } catch(err) {
+        res.status(500).send('Ocorreu um erro. ' + err);
+    }
+});
+
 export default router;
