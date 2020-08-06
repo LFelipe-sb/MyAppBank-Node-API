@@ -1,11 +1,16 @@
 import express from 'express';
 import { promises as fs} from 'fs';
-import accountRouter from './Routes/accounts.js'
+import accountRouter from './Routes/accounts.js';
+import cors from 'cors';
+import swaggerUI from 'swagger-ui-express';
+import {swaggerDocument} from './doc.js'
 
 import winston from 'winston';
 
 const app = express();
 app.use(express.json());
+app.use(cors());
+app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.use('/account', accountRouter);
 

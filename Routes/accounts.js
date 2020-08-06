@@ -42,7 +42,7 @@ router.get('/:id', async(req, res, next) => {
     try{
         const data = JSON.parse(await fs.readFile('accounts.json'));
         const account = data.account.find((account) => account.id === parseInt(req.params.id));
-        const index = data.account.findIndex((item) => item.id === parseInt(accountData.id));
+        const index = data.account.findIndex((item) => item.id === parseInt(account.id));
 
         if (index === -1) {
             throw new Error('Register not found');
